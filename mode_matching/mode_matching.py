@@ -1,13 +1,18 @@
 #!/usr/bin/env python2
-
+# -*- coding: utf-8 -*-
 import numpy as np
 import numpy.linalg as lin
 import matplotlib.pyplot as plt
 import sys
+from scipy.integrate import quad
 
-a = 1.0
+# assuming a < b
+
+a = np.sqrt(0.5)
 b = 1.0
 f = 1.0 # f/c0 actually, f_c = 1/(2a)
+
+assert (a < b)
 
 M = 1
 N = M
@@ -15,17 +20,30 @@ N = M
 DTYPE = np.complex
 
 def eigenfunction(a, n, x):
+    """
+    собственная функция f_a^n(x) прямоугольного волновода, нормированная на 1
+    учитываем только
+    1. TE-волны
+    2. зависимость от y отсутствует (m = 0)
+    3. только нечетные моды (n = 2 n' + 1)
+    """
     n = 2*n + 1
     return np.sqrt(2.0/a) * np.cos(np.pi*n*x/a)
 
 def _V(m, n):
+    """
+    матричный элемент V_{m, n} = \int_\limits_{-a/2}^{a/2} f_a^m(x) f_b^n(x) dx
+    """
     global a
     global b
     _m = m
     m = DTYPE(2*m + 1)
     n = DTYPE(2*n + 1)
-    arg = np.real(n * a/b) % 4
-    return 2.0/np.pi/np.sqrt(a*b) * (-1)**_m * (1.0/(m/a + n/b) + 1.0/(m/a - n/b)) * np.cos(arg * np.pi/2)
+    if m/a == n/b:
+        result = np.sqrt(a/b)
+    else:
+        result = 4./np.pi * a**(-1.5) * b**(-0.5) * m * (-1)**(_m) * np.cos(0.5 * np.pi * a/b * n) / ((m/a)**2 - (n/b)**2)
+    return result
 
 def _Y(n, a):
     global f
@@ -85,8 +103,6 @@ def conv_to_S(R):
     return result
 
 S = conv_to_S(R)
-plt.matshow(np.abs(S))
-plt.show()
 
 A = np.zeros(2*M)
 A[0] = 1.0
@@ -102,7 +118,8 @@ Eb = np.zeros(xb.shape, dtype = DTYPE)
 for i in xrange(M):
     Eb += (A[M+i] + B[M+i]) * eigenfunction(b, i, xb)
 
-plt.plot(xa, Ea)
-plt.plot(xb, Eb)
-plt.grid()
-plt.show()
+
+
+testfunc = lambda x: eigenfunction(a, 11, x) * eigenfunction(b, 17, x)
+print "Q = ", quad(testfunc, -a/2, a/2)[0]
+print "P = ", _V(11, 17)
