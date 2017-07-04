@@ -5,9 +5,11 @@ from pylab import *
 from scipy.constants import c as c0
 from pint import UnitRegistry
 from numpy import linalg as LA
+from PyQt5 import QtGui, QtCore
+import pyqtgraph as pg
 
 def eigenfunction(n, l, x):
-    return sqrt(2.0/l) * cos(pi*(2*n+1)*x/a)
+    return sqrt(2.0/l) * cos(pi*(2*n+1)*x/l)
 
 def Imn(m, n, a, b):
     return 4*(-1)**(n)*a**1.5*b**0.5*cos(0.5*pi*b*(2*m+1)/a)*(2*n+1)/pi/(-b**2*(2*m+1)**2+a**2*(2*n+1)**2)
@@ -206,7 +208,8 @@ def eval_filter6_30_a(filename = "vars.csv"):
     freqs = linspace(26.0, 36.0, num = 1001)
     s11 = zeros(freqs.shape)
 
-
+    plotWidget = pg.plot(title = "Transmission coefficient")
+    plotWidget
     for M in [5, 10, 20]:
         print M
         def getM(val):
@@ -249,14 +252,15 @@ def eval_filter6_30_a(filename = "vars.csv"):
             
             s11[i] = db(res[1][0,0])
 
-        plot(freqs, s11, label = 'M = %i' % M)
-        xlabel("Frequency [GHz]")
-        ylabel("$S_{21}$ [dB]")
-        title("Transmission coefficient (a.k.a. $S_{21}[0,0]$)")
+        # plot(freqs, s11, label = 'M = %i' % M)
+        # xlabel("Frequency [GHz]")
+        # ylabel("$S_{21}$ [dB]")
+        # title("Transmission coefficient (a.k.a. $S_{21}[0,0]$)")
+        plotWidget.plot(freqs, s11, title = "M = %i" % M, pen = (0, i))
 
-    grid(True)
-    legend()
-    show()
+    # grid(True)
+    # legend()
+    # show()
 
 def check_self_inverse(S):
     """
@@ -300,3 +304,7 @@ def test_waveguide_S():
 
 #test_waveguide_S()
 eval_filter6_30_a()
+
+if __name__ == "__main__":
+    app = QtGui.QApplication([])
+    app.exec_()

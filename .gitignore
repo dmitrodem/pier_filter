@@ -1,2 +1,3 @@
 *.hfssresults
 .ipynb_checkpoints
+*.pyc
