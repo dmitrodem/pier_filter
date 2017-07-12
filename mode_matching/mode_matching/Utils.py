@@ -2,6 +2,7 @@ from pint import UnitRegistry
 import numpy as np
 from numpy.lib.scimath import sqrt # handles sqrt(-1) as 1j
 from scipy.constants import c as c0
+from tempfile import mkdtemp
 
 """
 Various utilities
@@ -18,9 +19,9 @@ def toSI(*args):
     """
     result = []
     for arg in args:
-        try:
+        if type(arg) == str:
             result.append(__convSI(arg))
-        except:
+        else:
             result.append(arg)
     if len(result) == 1:
         return result[0]

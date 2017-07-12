@@ -34,10 +34,12 @@ class WaveguideJunction(GenericElement):
 
         QP = np.dot(Q, P)
         PQ = np.dot(P, Q)
-        s11 = lin.solve(np.eye(Ma) + QP, -np.eye(Ma) + QP)
-        s12 = 2 * lin.solve(np.eye(Ma) + QP, Q)
-        s21 = 2 * lin.solve(np.eye(Mb) + PQ, P)
-        s22 = lin.solve(np.eye(Mb) + PQ, np.eye(Mb) - PQ)
+        X = lin.inv(np.eye(Ma) + QP)
+        Y = lin.inv(np.eye(Mb) + PQ)
+        s11 = np.dot(X, -np.eye(Ma) + QP)
+        s12 = 2 * np.dot(X, Q)
+        s21 = 2 * np.dot(Y, P)
+        s22 = np.dot(Y, np.eye(Mb) - PQ)
 
         return (s11, s12, s21, s22)
 

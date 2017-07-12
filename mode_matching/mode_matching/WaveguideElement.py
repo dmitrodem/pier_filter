@@ -12,6 +12,7 @@ class WaveguideElement(GenericElement):
         frequency and number of modes (numModes)
         """
         self.width, self.length, self.frequency = Utils.toSI(width, length, frequency)
+        self.numModes = numModes
         gamma_vect = np.fromfunction(lambda m: Utils.GammaTEn0(m, self.width, self.frequency), (numModes, ))
         reflection  = np.zeros((numModes, numModes), dtype = complex)
         propagation = np.diag(np.exp(-gamma_vect * self.length))
@@ -19,7 +20,17 @@ class WaveguideElement(GenericElement):
         self.s12 = propagation
         self.s21 = propagation
         self.s22 = reflection
-    
+
+    def update(self, frequency):
+        """
+        Update S matrix for the specified frequency
+        """
+        self.frequency = Utils.toSI(frequency)
+        gamma_vect = np.fromfunction(lambda m: Utils.GammaTEn0(m, self.width, self.frequency), (self.numModes, ))
+        propagation = np.diag(np.exp(-gamma_vect * self.length))
+        self.s12 = propagation
+        self.s21 = propagation
+        
     def __repr__(self):
         fmt = \
 """

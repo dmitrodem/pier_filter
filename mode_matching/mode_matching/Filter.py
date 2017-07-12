@@ -2,6 +2,7 @@ from GenericElement import GenericElement
 from WaveguideElement import WaveguideElement
 from WaveguideJunction import WaveguideJunction
 import Utils
+from profilehooks import profile
 
 class Filter(GenericElement):
     """
@@ -90,10 +91,11 @@ def main():
     """
     
     import numpy as np
-    from matplotlib import pyplot as plt
-    from progressbar import ProgressBar
+    #from matplotlib import pyplot as plt
+    #from progressbar import ProgressBar
     import sys
-
+    from time import time
+    
     a	= "8.636mm"
     b	= "3.556mm"
     y0	= "20mm"
@@ -124,18 +126,29 @@ def main():
         (c4, dd),
         (a1, ddd)
         ]
+    descr_SI = []
+    for width, length in descr:
+        descr_SI.append(Utils.toSI(width, length))
+
+    #plt.figure()
     freqs = np.linspace(26e9, 36e9, num=101)
-    s21 = np.zeros(freqs.shape)
-    bar = ProgressBar(maxval = len(freqs))
-    bar.start()
-    for i, freq in enumerate(freqs):
-        f = Filter(descr, 10, freq)
-        f.calculate()
-        s21[i] = 20*np.log10(np.abs(f.s21[0,0]))
-        bar.update(i)
-    bar.finish()
-    plt.plot(freqs * 1e-9, s21)
-    plt.show()
+    nmodes = 10
+
+    def calc_filter(descr_SI, nmodes, freqs):
+        #s21 = np.zeros(freqs.shape)
+        #bar = ProgressBar(maxval = len(freqs))
+        #bar.start()
+        for i, freq in enumerate(freqs):
+            f = Filter(descr_SI, nmodes, freq)
+            f.calculate()
+            #s21[i] = 20*np.log10(np.abs(f.s21[0,0]))
+            #bar.update(i)
+        #bar.finish()
+        #plt.plot(freqs * 1e-9, s21, label = ("Num.modes = %i" % nmodes))
+    #plt.legend()
+    #plt.grid()
+    #plt.show()
+    calc_filter(descr_SI, nmodes, freqs)
 
 if __name__ == "__main__":
     main()
