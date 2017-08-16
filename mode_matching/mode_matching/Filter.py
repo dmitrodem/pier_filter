@@ -2,7 +2,7 @@ from GenericElement import GenericElement
 from WaveguideElement import WaveguideElement
 from WaveguideJunction import WaveguideJunction
 import Utils
-from profilehooks import profile
+from matplotlib import pyplot as plt
 
 class Filter(GenericElement):
     """
@@ -44,6 +44,8 @@ class Filter(GenericElement):
                 pass
 
         self.frequency = Utils.toSI(frequency)
+        self.initialize_networks()
+        self.update(self.frequency)
 
     def __repr__(self):
         fmt0 = "Filter object, consists of following waveguide sections:"
@@ -61,8 +63,8 @@ class Filter(GenericElement):
                                            numModes = numModes))
         return '\n'.join(message)
 
-    def calculate(self):
-        result = None
+    def initialize_networks(self):
+        self.networks = []
         for descr in self.descr:
             wtype = descr[0]
             if wtype == 'waveguide':
@@ -74,6 +76,13 @@ class Filter(GenericElement):
             else:
                 pass
 
+            self.networks.append(network)
+
+    def update(self, frequency):
+        self.frequency = Utils.toSI(frequency)
+        result = None
+        for network in self.networks:
+            network.update(frequency)
             if not result:
                 result = network
             else:
@@ -134,21 +143,30 @@ def main():
     freqs = np.linspace(26e9, 36e9, num=101)
     nmodes = 10
 
+    benchmark = False
+    
     def calc_filter(descr_SI, nmodes, freqs):
-        #s21 = np.zeros(freqs.shape)
+        s21 = np.zeros(freqs.shape)
         #bar = ProgressBar(maxval = len(freqs))
         #bar.start()
+        first = True
+        f = Filter(descr_SI, nmodes, freqs[0])
         for i, freq in enumerate(freqs):
-            f = Filter(descr_SI, nmodes, freq)
-            f.calculate()
-            #s21[i] = 20*np.log10(np.abs(f.s21[0,0]))
+            f.update(freq)
+            s21[i] = 20*np.log10(np.abs(f.s21[0,0]))
             #bar.update(i)
         #bar.finish()
-        #plt.plot(freqs * 1e-9, s21, label = ("Num.modes = %i" % nmodes))
-    #plt.legend()
-    #plt.grid()
-    #plt.show()
+
+        if not benchmark:
+            plt.plot(freqs * 1e-9, s21, label = ("Num.modes = %i" % nmodes))
+
     calc_filter(descr_SI, nmodes, freqs)
+
+    if not benchmark:
+        plt.legend()
+        plt.grid()
+        plt.show()
+
 
 if __name__ == "__main__":
     main()

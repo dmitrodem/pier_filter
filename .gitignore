@@ -1,3 +1,8 @@
 *.hfssresults
 .ipynb_checkpoints
 *.pyc
+.*
+art/auto/*
+art/*.aux
+art/*.log
+art/*.pdf

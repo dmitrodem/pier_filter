@@ -8,40 +8,42 @@ class WaveguideJunction(GenericElement):
     WaveguideJunction represents S matrix of a symmetric rectangular waveguide junction
     """
     def __init__(self, widthA, widthB, numModesA, numModesB, frequency):
-        self.widthA, self.widthB, self.frequency = Utils.toSI(widthA, widthB, frequency)
+        self.widthA, self.widthB = Utils.toSI(widthA, widthB)
         self.numModesA, self.numModesB = numModesA, numModesB
 
-        if abs(self.widthA) > abs(self.widthB):
-            (self.s11, self.s12, self.s21, self.s22) = \
-            self.__compute_S__(self.widthA, self.widthB,
-                               self.numModesA, self.numModesB,
-                               self.frequency)
+        self.direct =  abs(self.widthA) > abs(self.widthB) 
+        
+        if self.direct:
+            self.Q = np.fromfunction(lambda m, n: Utils.OverlappingTEn0(m, n, self.widthA, self.widthB), (self.numModesA, self.numModesB))
         else:
-            (self.s22, self.s21, self.s12, self.s11) = \
-            self.__compute_S__(self.widthB, self.widthA,
-                               self.numModesB, self.numModesA,
-                               self.frequency)
-            
+            self.Q = np.fromfunction(lambda m, n: Utils.OverlappingTEn0(m, n, self.widthB, self.widthA), (self.numModesB, self.numModesA))
 
-    def __compute_S__(self, a, b, Ma, Mb, frequency):
-        """
-        Compute S matrix elements assuming that a > b
-        """
-        Q = np.fromfunction(lambda m, n: Utils.OverlappingTEn0(m, n, a, b), (Ma, Mb))
-        P = np.fromfunction(lambda m, n:
-                            Utils.GammaTEn0(n, a, frequency) / Utils.GammaTEn0(m, b, frequency) * Utils.OverlappingTEn0(n, m, a, b),
-                            (Mb, Ma))
+        self.eye_modesA = np.eye(self.numModesA)
+        self.eye_modesB = np.eye(self.numModesB)
+        self.update(frequency)
 
-        QP = np.dot(Q, P)
-        PQ = np.dot(P, Q)
-        X = lin.inv(np.eye(Ma) + QP)
-        Y = lin.inv(np.eye(Mb) + PQ)
-        s11 = np.dot(X, -np.eye(Ma) + QP)
-        s12 = 2 * np.dot(X, Q)
-        s21 = 2 * np.dot(Y, P)
-        s22 = np.dot(Y, np.eye(Mb) - PQ)
-
-        return (s11, s12, s21, s22)
+    def update(self, frequency):
+        self.frequency = Utils.toSI(frequency)
+        if self.direct:
+            self.P = np.fromfunction(lambda m, n: Utils.GammaTEn0(n, self.widthA, frequency) / Utils.GammaTEn0(m, self.widthB, frequency), (self.numModesB, self.numModesA)) * self.Q.T
+            QP = np.dot(self.Q, self.P)
+            PQ = np.dot(self.P, self.Q)
+            X = lin.inv(self.eye_modesA + QP)
+            Y = lin.inv(self.eye_modesB + PQ)
+            self.s11 = np.dot(X, -self.eye_modesA + QP)
+            self.s12 = 2 * np.dot(X, self.Q)
+            self.s21 = 2 * np.dot(Y, self.P)
+            self.s22 = np.dot(Y, self.eye_modesB - PQ)
+        else:
+            self.P = np.fromfunction(lambda m, n: Utils.GammaTEn0(n, self.widthB, frequency) / Utils.GammaTEn0(m, self.widthA, frequency), (self.numModesA, self.numModesB)) * self.Q.T
+            QP = np.dot(self.Q, self.P)
+            PQ = np.dot(self.P, self.Q)
+            X = lin.inv(self.eye_modesB + QP)
+            Y = lin.inv(self.eye_modesA + PQ)
+            self.s22 = np.dot(X, -self.eye_modesB + QP)
+            self.s21 = 2 * np.dot(X, self.Q)
+            self.s12 = 2 * np.dot(Y, self.P)
+            self.s11 = np.dot(Y, self.eye_modesA - PQ)
 
     def __repr__(self):
         fmt = \

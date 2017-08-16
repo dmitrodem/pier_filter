@@ -5,8 +5,9 @@ from pylab import *
 from scipy.constants import c as c0
 from pint import UnitRegistry
 from numpy import linalg as LA
-from PyQt5 import QtGui, QtCore
-import pyqtgraph as pg
+#from PyQt5 import QtGui, QtCore
+#import pyqtgraph as pg
+from time import time
 
 def eigenfunction(n, l, x):
     return sqrt(2.0/l) * cos(pi*(2*n+1)*x/l)
@@ -201,16 +202,14 @@ def load_constants(filename = "vars.csv"):
     return result
 
 def eval_filter6_30_a(filename = "vars.csv"):
-    
-    freq = 30.5
+    print time()
     d = load_constants(filename)
 
     freqs = linspace(26.0, 36.0, num = 1001)
     s11 = zeros(freqs.shape)
 
-    plotWidget = pg.plot(title = "Transmission coefficient")
-    plotWidget
-    for M in [5, 10, 20]:
+    #plotWidget = pg.plot(title = "Transmission coefficient")
+    for M in [10]:
         print M
         def getM(val):
             return int(M * d[val]/d['a'])
@@ -256,8 +255,8 @@ def eval_filter6_30_a(filename = "vars.csv"):
         # xlabel("Frequency [GHz]")
         # ylabel("$S_{21}$ [dB]")
         # title("Transmission coefficient (a.k.a. $S_{21}[0,0]$)")
-        plotWidget.plot(freqs, s11, title = "M = %i" % M, pen = (0, i))
-
+        #plotWidget.plot(freqs, s11, title = "M = %i" % M, pen = (0, i))
+    print time()
     # grid(True)
     # legend()
     # show()
@@ -305,6 +304,6 @@ def test_waveguide_S():
 #test_waveguide_S()
 eval_filter6_30_a()
 
-if __name__ == "__main__":
-    app = QtGui.QApplication([])
-    app.exec_()
+#if __name__ == "__main__":
+#    app = QtGui.QApplication([])
+#    app.exec_()

@@ -1,0 +1,66 @@
+\documentclass{pj}
+\usepackage{graphics}
+
+\begin{document}
+
+\setcounter{page}{1}
+\pjheader{Vol.\ x, y--z, 2014}
+
+\title
+{Replace This Line with the Title of Your Manuscript}
+\footnote{\it Received date}
+\footnote{\hskip-0.12in*\, Corresponding author:~Dmitriy~Dyomin (demin.da@mipt.ru).}
+\footnote{\hskip-0.12in\textsuperscript{1} The first affiliation. \textsuperscript{2} The second affiliation.}
+
+\author{Dmitriy~A.~Dyomin\textsuperscript{*, 1} and FirstName2~LastName2\textsuperscript{2}}
+
+
+
+\begin{abstract}
+  Abstract
+\end{abstract}
+\section{Introduction}
+\label{sec:introduction}
+
+One of the most popular ways to synthesize filter is to specify its
+return loss. For the case of linear time-invariant networks (such as
+``ladder'' networks consisting of inductive and capacitive lumped
+elements), the transfer function is known to be rational function,
+i.e.
+
+\[
+  S_{21}(p) = \frac{N(p)}{M(p)}
+\]
+
+where $N(p)$ and $M(p)$ are polynomial and $p = \sigma + j \omega$ is
+a complex frequency variable.
+
+A classic approach of synthesizing lowpass filter is done by specifing
+explicit frequency dependence of return loss
+$\left|S_{21}(j\omega)\right|^2$. Using that information, one can
+determine polynomials $N(p)$ and $M(p)$ and (by finding their's roots)
+zeros and poles of the transfer function.
+
+Unfortunately, there is no easy way to calculate filter prototype
+values $g_i$ using its transfer function. Explicit solutions are
+well-known for a case of maximally flat response filter
+(a.k.a. Butterworth filter) and equiripple filter (or Tchebysheff
+filter).
+
+
+
+In a classic case of a ``ladder'' network made of
+inductive and capacitive lumped elements, insertion loss may be
+represented as $P_{LR} = 1 + M(\omega^2)/N(\omega^2)$. Filter design
+is accomplished by specifying explicit polynoms $M(\omega^2)$,
+$N(\omega^2)$. Filter design tools such as {\em Matlab Filter Design
+  Toolbox} or {\em scipy.signals} provide means to synthesize filter
+transfer function $H(s)$, namely its zeros and poles.
+
+
+
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
