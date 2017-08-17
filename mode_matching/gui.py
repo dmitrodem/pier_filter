@@ -4,37 +4,21 @@ import sys
 from PyQt5.QtWidgets import (QApplication, QWidget,
                              QHBoxLayout, QVBoxLayout,
                              QPushButton, QLabel, QSpinBox,
-                             QTableWidget, QTableWidgetItem)
-from PyQt5.Qt import QSizePolicy, QSize, QColor
+                             QTableWidget, QTableWidgetItem,
+                             QMenu, QAction)
+from PyQt5.Qt import QSizePolicy, QSize, QColor, QItemSelection
+from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from PyQt5.QtGui import (QPen, QColor, QFont, QPainter)
 
 from pyqtgraph import PlotWidget
 
-class RowWidget(QWidget):
-    def __init__(self):
-        super(RowWidget, self).__init__()
-        self.initUI()
-
-    def initUI(self):
-        length_label = QLabel("Length [mm]")
-        self.length_field = QSpinBox()
-        width_label = QLabel("Width [mm]")
-        self.width_field = QSpinBox()
-        hbox = QHBoxLayout()
-        hbox.addWidget(length_label)
-        hbox.addWidget(self.length_field)
-        hbox.addWidget(width_label)
-        hbox.addWidget(self.width_field)
-        self.setLayout(hbox)
-
 class DrawingWidget(QWidget):
     def __init__(self):
         super(DrawingWidget, self).__init__()
-        self.setMinimumSize(100, 100)
+        self.setMinimumSize(200, 200)
         self.show()
 
     def paintEvent(self, e):
-        print "paint event"
         qp = QPainter()
         qp.begin(self)
         self.drawWidget(qp)
@@ -53,19 +37,78 @@ class DrawingWidget(QWidget):
         
         qp.setBrush(QColor(100, 200, 0, 255))
         qp.drawRect(off_w, off_h, width, height)
+
+class TableWidget(QTableWidget):
+    def __init__(self, rows, columns):
+        super(TableWidget, self).__init__(rows, columns)
+
+        self.insertAboveAction = QAction("Insert Row &Above")
+        self.insertAboveAction.triggered.connect(self.insertAbove)
         
+        self.insertBelowAction = QAction("Insert Row &Below")
+        self.insertBelowAction.triggered.connect(self.insertBelow)
+
+        self.deleteAction = QAction("&Delete Selection")
+        self.deleteAction.triggered.connect(self.deleteRows)
+
+    def contextMenuEvent(self, event):
+        menu = QMenu()
+        menu.addAction(self.insertAboveAction)
+        menu.addAction(self.insertBelowAction)
+        menu.addAction(self.deleteAction)
+        action = menu.exec_(self.mapToGlobal(event.pos()))
+
+    def getSelectedRows(self):
+        indices = self.selectionModel().selection().indexes()
+        rows = []
+        for i in indices:
+            rows.append(i.row())
+        rows = list(set(rows))
+
+        return rows
+    
+    def insertAbove(self):
+        rows = self.getSelectedRows()
+        if rows:
+            self.insertRow(rows[0])
+        else:
+            self.insertRow(0)
+            
+    def insertBelow(self):
+        rows = self.getSelectedRows()
+        if rows:
+            self.insertRow(rows[-1])
+        else:
+            self.insertRow(self.rowCount())
+            
+    def deleteRows(self):
+        rows = self.getSelectedRows()
+        for r in rows:
+            self.removeRow(r)
+
 class FilterGUI(QWidget):
+    valueChanged = pyqtSignal([int], ['QString'])
+
+    @pyqtSlot()
+    def foo(self):
+        print "simple signal"
+
     def __init__(self):
         super(FilterGUI, self).__init__()
+        self.valueChanged.connect(self.foo)
+        self.valueChanged.emit('')
         self.initUI()
 
     def initUI(self):
         self.drawing_area = DrawingWidget()
         self.plotting_area = PlotWidget()
-        self.table = QTableWidget(0, 2)
+        #self.table = QTableWidget(0, 2)
+        self.table = TableWidget(0, 2)
         self.table.setHorizontalHeaderLabels(['Width, mm', 'Length, mm'])
         add_section_button = QPushButton("Add &Section")
         add_section_button.clicked.connect(self.addRow)
+        calculate_button = QPushButton("&Calculate");
+        calculate_button.clicked.connect(self.dumpConfig)
         vbox_left = QVBoxLayout()
         vbox_left.addWidget(self.drawing_area)
         vbox_left.addWidget(self.plotting_area)
@@ -73,6 +116,7 @@ class FilterGUI(QWidget):
         vbox_right = QVBoxLayout()
         vbox_right.addWidget(self.table)
         vbox_right.addWidget(add_section_button)
+        vbox_right.addWidget(calculate_button)
         vbox_right.addStretch()
         
         hbox = QHBoxLayout()
@@ -85,7 +129,7 @@ class FilterGUI(QWidget):
 
     def addRow(self):
         self.table.insertRow(self.table.rowCount())
-        self.dumpConfig()
+        
 
     def dumpConfig(self):
         for row in xrange(self.table.rowCount()):
@@ -96,6 +140,8 @@ class FilterGUI(QWidget):
                     item = item.text()
                 items.append(item)
             print items
+
+
 
 def run():
     app = QApplication(sys.argv)
