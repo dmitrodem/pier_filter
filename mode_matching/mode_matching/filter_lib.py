@@ -3,12 +3,13 @@
 
 import numpy as np
 from matplotlib import pyplot as plt
-from equivalent_circuit import shunt_impedance_approximation
+from equivalent_circuit import thick_iris_approximaiton
 from Utils import toSI as SI
 from scipy.constants import c as c0
 from WaveguideJunction import WaveguideJunction
 from WaveguideElement import WaveguideElement
 from GenericElement import GenericElement
+from ThickIris import ThickIris
 
 def butterworth_prototype(order):
     """
@@ -90,16 +91,12 @@ def build_tchebysheff_filter(n, ripple, fbw):
     # импедансы индуктивностей на частоте omega = 1
     L = k/(1-k**2)
 
-    print u"индуктивности катушек: ", L
-
     #углы
     theta = np.arctan(2*L)
 
     ang = np.zeros(n)
     for i in xrange(n):
         ang[i] = np.pi - 0.5*(theta[i] + theta[i+1])
-
-    print u"длины резонаторов в радианах:", ang
 
     return L, ang
 
@@ -137,31 +134,49 @@ def calculate_filter_response(L, ang, fbw, wc):
 
 def run():
     print 
-    n = 5
-    ripple = 0.05
+    n = 6
+    ripple = 0.1
     fbw = 0.1 # TODO: понять, как связана реальная полоса фильтра
               #       с этим параметром
-    wc = 0.7 # wc/w0 -- нормированная критическая частота
+
+    a = SI("7.112mm")
+    h = SI("2.0mm")
+    ha = h/a # нормированная толщина диафрагмы
+    fcenter = SI("30.1GHz")
+    fcutoff = c0/2.0/a
+
+    wc = fcutoff / fcenter # нормированная критическая частота
     
     L, ang = build_tchebysheff_filter(n, ripple, fbw)
 
-    _, Bi = shunt_impedance_approximation(wc)
+    b_interp, theta_interp = thick_iris_approximaiton(wc, ha)
 
-    for i, l in enumerate(L):
-        print "b[%i]/a = %f" % (i, Bi(l))
+    b       = a*np.array(map(b_interp, L))    # ширины щелей в метрах
+    thetas  = np.array(map(theta_interp, L))
+    delta_ang = 0.5*(thetas[:-1] + thetas[1:]) # учитываем конечную толщину диафрагм
+    angc = ang - delta_ang
 
-    norm_lengths = ang/(2.0*np.pi)/np.sqrt(1-wc**2)
+    print u"Входные параметры:"
+    print u"\tШирина волновода a = %4.2f мм" % (a/SI("1mm"))
+    print u"\tТолщина диафрагм h = %4.2f мм" % (h/SI("1mm"))
+    print u"\tЦентральная частота Fc = %4.2f ГГц ± %4.2f%%" % (fcenter/SI("1GHz"), 100*fbw)
+    print u"\tЧастота среза Fcutoff = %4.2f * Fc" % wc
+    print u"\tПорядок фильтра n = %i" % n
+    print u"\tНеравномерность в полосе пропускания %4.2f дБ" % ripple
     
-    for i, length in enumerate(norm_lengths):
-        print "l[%i]/lambda = %f" % (i, length)
+    
+    print u"Ширины щелей:"
+    for i, l in enumerate(L):
+        print "\tb[%i] = %4.2f мм" % (i, a*b_interp(l)/SI("1mm"))
 
-    fcenter = SI("30.1GHz")
-    fcutoff = wc * fcenter
-    a = c0/2/fcutoff # ширина волновода в метрах
-    b = a*np.array(map(Bi, L)) # ширины щелей в метрах
+    norm_lengths = angc/(2.0*np.pi)/np.sqrt(1-wc**2)
     lengths = c0/fcenter * norm_lengths # длины резонаторов в метрах
 
-    print "Длина фильтра = %f мм" % (np.sum(lengths)/SI("1mm"))
+    print u"Длины резонирующих секций:"
+    for i, length in enumerate(lengths):
+        print "\tl[%i] = %4.2f мм" % (i, length/SI("1mm"))
+    
+    print "Полная длина фильтра = %4.2f мм" % ((np.sum(lengths) + n*h)/SI("1mm"))
     
     nummodes = 10
     minB = np.min(b)
@@ -175,14 +190,12 @@ def run():
         m = WaveguideElement(a, 0, numModesA, f) # затычка нулевой длины
         for j, _ in enumerate(lengths):
             numModesB = int(b[j]/minB*nummodes)
-            n1 = WaveguideJunction(a, b[j], numModesA, numModesB, f)
-            n1p = GenericElement(n1.s22, n1.s21, n1.s12, n1.s11)
+            n1 = ThickIris(a, b[j], h, numModesA, numModesB, f)
             n2 = WaveguideElement(a, lengths[j], numModesA, f)
-            m = m*(n1*n1p*n2)
+            m = m*(n1*n2)
 
-        n1 = WaveguideJunction(a, b[-1], numModesA, numModesB, f)
-        n1p = GenericElement(n1.s22, n1.s21, n1.s12, n1.s11)
-        m = m * (n1*n1p)
+        n1 = ThickIris(a, b[-1], h, numModesA, numModesB, f)
+        m = m * n1
         s11[i] = m.s21[0,0]
 
     plt.plot(frequencies/fcenter, 20*np.log10(np.abs(s11)),
