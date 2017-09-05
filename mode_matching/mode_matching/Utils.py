@@ -46,4 +46,7 @@ def OverlappingTEn0(m, n, a, b):
     Calculate matrix elements Imn = \int_{S} Eigenfunction(m, a) * Eigenfunction(n, b) dx
     NB: ensure that a > b before calling this function
     """
-    return 4*(-1)**(n)*a**1.5*b**0.5*np.cos(0.5*np.pi*b*(2*m+1)/a)*(2*n+1)/np.pi/(-b**2*(2*m+1)**2+a**2*(2*n+1)**2)
+    try:
+        return 4*(-1)**(n)*a**1.5*b**0.5*np.cos(0.5*np.pi*b*(2*m+1)/a)*(2*n+1)/np.pi/(-b**2*(2*m+1)**2+a**2*(2*n+1)**2)
+    except ZeroDivisionError:
+        return np.sqrt(b/a)

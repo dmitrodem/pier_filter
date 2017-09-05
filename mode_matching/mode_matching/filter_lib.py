@@ -132,12 +132,9 @@ def calculate_filter_response(L, ang, fbw, wc):
 
     return Omega, reflection, transmission
 
-def run():
+def eval_filter(order, ripple, fbw):
     print 
-    n = 6
-    ripple = 0.1
-    fbw = 0.1 # TODO: понять, как связана реальная полоса фильтра
-              #       с этим параметром
+    n = order
 
     a = SI("7.112mm")
     h = SI("2.0mm")
@@ -146,8 +143,9 @@ def run():
     fcutoff = c0/2.0/a
 
     wc = fcutoff / fcenter # нормированная критическая частота
-    
-    L, ang = build_tchebysheff_filter(n, ripple, fbw)
+
+    fbw_corrected = fbw / (1-wc**2) # пытаюсь учесть дисперсию линии
+    L, ang = build_tchebysheff_filter(n, ripple, fbw_corrected)
 
     b_interp, theta_interp = thick_iris_approximaiton(wc, ha)
 
@@ -163,8 +161,8 @@ def run():
     print u"\tЧастота среза Fcutoff = %4.2f * Fc" % wc
     print u"\tПорядок фильтра n = %i" % n
     print u"\tНеравномерность в полосе пропускания %4.2f дБ" % ripple
-    
-    
+
+
     print u"Ширины щелей:"
     for i, l in enumerate(L):
         print "\tb[%i] = %4.2f мм" % (i, a*b_interp(l)/SI("1mm"))
@@ -175,9 +173,9 @@ def run():
     print u"Длины резонирующих секций:"
     for i, length in enumerate(lengths):
         print "\tl[%i] = %4.2f мм" % (i, length/SI("1mm"))
-    
+
     print "Полная длина фильтра = %4.2f мм" % ((np.sum(lengths) + n*h)/SI("1mm"))
-    
+
     nummodes = 10
     minB = np.min(b)
 
@@ -185,7 +183,8 @@ def run():
 
     frequencies = np.linspace((1-2*fbw) * fcenter, (1+2*fbw) * fcenter, num = 1000)
     s11 = np.zeros(frequencies.shape, dtype = complex)
-    
+
+
     for i, f in enumerate(frequencies):
         m = WaveguideElement(a, 0, numModesA, f) # затычка нулевой длины
         for j, _ in enumerate(lengths):
@@ -204,9 +203,25 @@ def run():
     Omega, reflection, transmission = calculate_filter_response(L, ang, fbw, wc)
     plt.plot(Omega, 10*np.log10(transmission),
              label = 'Approximate solution (equivalent circuit)')
+    ind = np.where(10*np.log10(transmission) > -3.0)
+    passband = Omega[ind]
+    bw = np.max(passband) - np.min(passband)
+    print u'Ширина полосы = %4.2f%%' % (100*bw)
+    
+
+    hfss_data = np.loadtxt('data/s21.csv', skiprows = 1, delimiter = ',')
+    hfss_freq = hfss_data[:, 0] / 30.1
+    hfss_s21  = hfss_data[:, 1]
+    plt.plot(hfss_freq, hfss_s21, label = 'HFSS solution (FEM)')
     plt.grid()
     plt.ylim([-150, 10])
     plt.legend()
     plt.show()
 
-run()
+    return bw
+
+def run():
+    eval_filter(order = 6, ripple = 0.1, fbw = 0.051)
+
+if __name__ == '__main__':
+    run()
