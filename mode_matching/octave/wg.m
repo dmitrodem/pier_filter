@@ -16,18 +16,19 @@ lambda0 = c0/f_0/unit;
 
 TE_mode = 'TE10';
 
-FDTD = InitFDTD('NrTS', 1e7, 'OverSampling', 5, 'EndCriteria', 1e-7);
+FDTD = InitFDTD('NrTS', 1e7, 'OverSampling', 5, 'EndCriteria', 1e-10);
+FDTD = SetupMPI(FDTD,'SplitN_X',2);
 BC = {'PML_8', 'PML_8', 'PEC', 'PEC', 'PEC', 'PEC'};
 FDTD = SetBoundaryCond(FDTD, BC);
 FDTD = SetGaussExcite(FDTD, 0.5*(f_start + f_end), 0.5*(f_end - f_start));
 
-mesh_res = lambda0 ./ [200, 200, 200];
+mesh_res = lambda0 ./ [500, 500, 500];
 
 gaps = [4.56, 3.59, 3.39, 3.36, 3.39, 3.59, 4.56];
 lengths = [4.68, 5.50, 5.63, 5.63, 5.50, 4.68];
 wg_width = 7.112;
 wg_height = wg_width/2;
-wg_length = 10.0;
+wg_length = 5.0;
 thickness = 2.0;
 
 CSX = InitCSX();
@@ -80,7 +81,7 @@ if (do_run == 1)
   [status, message, messageid] = mkdir(SimPath);
 
   WriteOpenEMS([SimPath, '/', SimCSX], FDTD, CSX);
-  CSXGeomPlot([SimPath, '/', SimCSX]);
-  RunOpenEMS(SimPath, SimCSX);
+  %CSXGeomPlot([SimPath, '/', SimCSX]);
+  %RunOpenEMS(SimPath, SimCSX);
 end
 

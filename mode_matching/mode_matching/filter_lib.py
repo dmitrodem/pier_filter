@@ -132,7 +132,7 @@ def calculate_filter_response(L, ang, fbw, wc):
 
     return Omega, reflection, transmission
 
-def eval_filter(order, ripple, fbw):
+def eval_filter(order, ripple, fbw, plot_hfss = False, plot_openems = False):
     print 
     n = order
 
@@ -146,6 +146,9 @@ def eval_filter(order, ripple, fbw):
 
     fbw_corrected = fbw / (1-wc**2) # пытаюсь учесть дисперсию линии
     L, ang = build_tchebysheff_filter(n, ripple, fbw_corrected)
+
+    print u'\tX/Z0 = ', L
+    print u'\tang[deg] = ', np.rad2deg(ang)
 
     b_interp, theta_interp = thick_iris_approximaiton(wc, ha)
 
@@ -169,6 +172,8 @@ def eval_filter(order, ripple, fbw):
 
     norm_lengths = angc/(2.0*np.pi)/np.sqrt(1-wc**2)
     lengths = c0/fcenter * norm_lengths # длины резонаторов в метрах
+    conv_coeff = 1.0/(2.0*np.pi)/np.sqrt(1-wc**2)*c0/fcenter
+    print u'\tкоэффициент конвертирования = ', conv_coeff
 
     print u"Длины резонирующих секций:"
     for i, length in enumerate(lengths):
@@ -176,13 +181,16 @@ def eval_filter(order, ripple, fbw):
 
     print "Полная длина фильтра = %4.2f мм" % ((np.sum(lengths) + n*h)/SI("1mm"))
 
+    print map(lambda x : "%4.2fmm" %x,  lengths/SI("1mm"))
+    print map(lambda x : "%4.2fmm" %x,  a*b_interp(L)/SI("1mm"))
+    
     nummodes = 10
     minB = np.min(b)
 
     numModesA = int(a/minB*nummodes)
 
     frequencies = np.linspace((1-2*fbw) * fcenter, (1+2*fbw) * fcenter, num = 1000)
-    s11 = np.zeros(frequencies.shape, dtype = complex)
+    s21 = np.zeros(frequencies.shape, dtype = complex)
 
 
     for i, f in enumerate(frequencies):
@@ -195,24 +203,50 @@ def eval_filter(order, ripple, fbw):
 
         n1 = ThickIris(a, b[-1], h, numModesA, numModesB, f)
         m = m * n1
-        s11[i] = m.s21[0,0]
+        s21[i] = m.s21[0,0]
 
-    plt.plot(frequencies/fcenter, 20*np.log10(np.abs(s11)),
+    plt.plot(frequencies/fcenter, 20*np.log10(np.abs(s21)),
              label = 'Exact solution (mode matching)')
+
+    with open("/tmp/01_exact.txt", "w") as fd:
+        xs = frequencies/fcenter
+        ys = 20*np.log10(np.abs(s21))
+        for i, _ in enumerate(xs):
+            fd.write("{} {}\n".format(xs[i], ys[i]))
     
     Omega, reflection, transmission = calculate_filter_response(L, ang, fbw, wc)
-    plt.plot(Omega, 10*np.log10(transmission),
-             label = 'Approximate solution (equivalent circuit)')
-    ind = np.where(10*np.log10(transmission) > -3.0)
+    if True:
+        plt.plot(Omega, 10*np.log10(transmission),
+                 label = 'Approximate solution (equivalent circuit)')
+
+    with open("/tmp/02_approx.txt", "w") as fd:
+        xs = Omega*fcenter*1e-9;
+        ys = 10*np.log10(transmission)
+        for i, _ in enumerate(xs):
+            fd.write("{} {}\n".format(xs[i], ys[i]))
+    
+    ind = np.where(20*np.log10(np.abs(s21)) > -3.0)
     passband = Omega[ind]
     bw = np.max(passband) - np.min(passband)
     print u'Ширина полосы = %4.2f%%' % (100*bw)
-    
 
-    hfss_data = np.loadtxt('data/s21.csv', skiprows = 1, delimiter = ',')
-    hfss_freq = hfss_data[:, 0] / 30.1
-    hfss_s21  = hfss_data[:, 1]
-    plt.plot(hfss_freq, hfss_s21, label = 'HFSS solution (FEM)')
+    if plot_hfss:
+        hfss_data = np.loadtxt('data/s21.csv', skiprows = 1, delimiter = ',')
+        hfss_freq = hfss_data[:, 0] / 30.1
+        hfss_s21  = hfss_data[:, 1]
+        plt.plot(hfss_freq, hfss_s21, label = 'HFSS solution (FEM)') 
+        with open("/tmp/03_hfss.txt", "w") as fd:
+            xs = hfss_freq
+            ys = hfss_s21
+            for i, _ in enumerate(xs):
+                fd.write("{} {}\n".format(xs[i], ys[i]))
+        
+    if plot_openems:
+        openems_data = np.loadtxt('data/openems.csv', delimiter = ',')
+        openems_freq = openems_data[:, 0]
+        openems_s21  = openems_data[:, 1]
+        plt.plot(openems_freq, openems_s21, label = 'OpenEMS solution (FDTD)')
+    
     plt.grid()
     plt.ylim([-150, 10])
     plt.legend()
@@ -221,7 +255,7 @@ def eval_filter(order, ripple, fbw):
     return bw
 
 def run():
-    eval_filter(order = 6, ripple = 0.1, fbw = 0.051)
+    eval_filter(order = 6, ripple = 0.1, fbw = 0.051, plot_hfss = True, plot_openems = False)
 
 if __name__ == '__main__':
     run()

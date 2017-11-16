@@ -1,0 +1,28 @@
+\documentclass{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage{tikz}
+\usetikzlibrary{patterns,arrows,angles,quotes,calc}
+\usepackage[european, siunitx, rotatelabels, american inductor]{circuitikz}
+\begin{document}
+\begin{circuitikz}
+  
+  \def\a{1.5cm}
+  \def\b{2cm}
+  \def\c{0.5cm}
+
+  \ctikzset{label/align = straight}
+  \draw
+  (0, 0) to [TL,l=$\theta/2$,o-]
+  ++(\b, 0) node[circ]{} coordinate (x0)
+  to [TL,l=$\theta/2$,-o] ++(\b, 0);
+
+  \draw (x0) to [american inductor,l=$jX$] ++ (0, -\a) node[rground]{};
+  
+\end{circuitikz}
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
+

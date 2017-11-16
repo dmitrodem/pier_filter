@@ -61,12 +61,16 @@ def thick_iris_approximaiton(fc, thickness, b_range = (0.05, 0.75), b_num = 100)
     return b_interp, theta_interp
 
 def run():
-    for fc in np.linspace(0.5, 0.9, num = 11):
+    fd = open("/tmp/results.txt", "w")
+    bs = np.linspace(0.05, 0.5, num = 100)
+    for fc in np.linspace(0.4, 0.9, num = 21):
         print fc
-        z, _ = thick_iris_approximaiton(fc, 0.1)
-        bs = np.linspace(0.05, 0.5, num = 100)
+        z, theta = thick_iris_approximaiton(fc, 0.1)
+        for b in bs:
+            fd.write("{}\t{}\t{}\n".format(fc, b, theta(b)))
         plt.plot(bs, z(bs), label = '$fc/f0 = %f$' % fc)
 
+    fd.close()
     plt.xlabel("$b/a$")
     plt.ylabel("$X/Z_0$")
     plt.grid()
@@ -74,5 +78,4 @@ def run():
     plt.show()
 
 if __name__ == '__main__':
-    thick_iris_approximaiton(0.5, 0.0)
-
+    run()

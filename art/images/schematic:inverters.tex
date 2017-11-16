@@ -1,0 +1,28 @@
+\documentclass{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage{tikz}
+\usetikzlibrary{patterns,arrows,angles,quotes,calc}
+\usepackage[european, siunitx, rotatelabels, american inductor]{circuitikz}
+\begin{document}
+\begin{circuitikz}
+  
+  \def\a{1.5cm}
+  \def\b{1.5cm}
+  \def\c{0.5cm}
+
+  \ctikzset{label/align = straight}
+  \draw node{in} (0, 0) ++(\c, 0)
+  to[twoport,t=$K_{1}$] ++(\a, 0)
+  to[TL,l=$l_1^{'}$] ++ (\b, 0)
+  to[twoport,t=$K_{2}$] ++(\a, 0)
+  ++(\c,0) node {$\dots$} ++(\c, 0)
+  to[TL,l=$l_{N}^{'}$] ++(\b, 0)
+  to[twoport,t=$K_{N+1}$] ++(\a,0)
+  ++(\c,0) node{out};
+\end{circuitikz}
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

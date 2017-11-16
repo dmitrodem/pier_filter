@@ -1,0 +1,31 @@
+\documentclass{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage{tikz}
+\usetikzlibrary{patterns,arrows,angles,quotes,calc}
+\usepackage[european, siunitx, rotatelabels, american inductor]{circuitikz}
+\begin{document}
+\begin{circuitikz}
+  
+  \def\a{1.5cm}
+  \def\b{2.5cm}
+  \def\c{0.5cm}
+
+  \ctikzset{label/align = straight}
+  \draw node[anchor=east]{in} (0, 0) to (\c, 0) coordinate (z0) node[circ]{};
+  \draw (z0) to [american inductor,l^=$jX_1$] ++(0, -\a) node[rground]{};
+  \draw (z0) to [TL,l=$l_1$] ++(\b, 0) coordinate (z0) node[circ]{};
+  \draw (z0) to [american inductor,l=$jX_2$] ++(0, -\a) node[rground]{};
+  \draw (z0) to [TL,l=$l_2$] ++({0.9*\b}, 0);
+  \coordinate (z0) at ($(z0) + (\b, 0)$);
+  \node at ($(z0) + (0, -\a/2)$) {$\dots$};
+  \coordinate (z0) at ($(z0) + (0.1*\b, 0)$);
+  \draw (z0) to [TL,l=$l_{N}$] ++({0.9*\b}, 0) coordinate (z0) node[circ]{};
+  \draw (z0) to [american inductor,l=$jX_{N+1}$] ++(0, -\a) node[rground]{};
+  \draw (z0) to [short] ++(\c, 0) node[anchor=west]{out};
+\end{circuitikz}
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

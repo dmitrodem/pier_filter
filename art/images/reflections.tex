@@ -1,0 +1,35 @@
+\documentclass{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage{tikz}
+\usetikzlibrary{patterns,arrows,angles,quotes,calc}
+\usepackage{pgfplots}
+% \pgfplotsset{
+%   legend style = {
+%     rounded corners = 5pt,
+%     anchor=south east,
+%     at = {(1,0)},
+%     font = 0.1em
+%   }
+% }
+\begin{document}
+\begin{tikzpicture}
+
+  \begin{axis}[
+    xlabel=$F/F_0$,
+    ylabel={$S_{21}$, dB},
+    grid=major,
+    % legend entries = {Mode matching, Equivalent circuit, FEM},
+    xmin = 0.9, xmax=1.1,
+    ymin = -100, ymax = 0
+    ]
+    \addplot [ thick, black, solid]   table {../data/01_mode_matching.txt};
+    \addplot [ thick, red, dashed]    table {../data/02_equivalent_circuit.txt};
+    \addplot [ thick, orange, dotted] table {../data/03_hfss.txt};
+  \end{axis}
+\end{tikzpicture}
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

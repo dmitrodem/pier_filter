@@ -1,0 +1,21 @@
+\documentclass{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+% This file was created by matplotlib2tikz v0.6.11.
+
+\begin{document}
+\begin{tikzpicture}[]
+    \begin{axis}[colorbar,colormap/viridis,xlabel={$m \quad (a = \sqrt{2})$},
+      ylabel={$n \quad (b = 1)$}]
+    \addplot[scatter,scatter src=explicit, 
+    only marks, mark=square*,point meta={\thisrow{S12}}]
+    table {../data/s21_matrix.txt};
+             
+    \end{axis}
+\end{tikzpicture}
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

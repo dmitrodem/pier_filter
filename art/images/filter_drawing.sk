@@ -1,0 +1,173 @@
+
+def model {
+    def l1 .468
+    def l2 .550
+    def l3 .563
+    def l4 .563
+    def l5 .550
+    def l6 .468
+
+    def b1 .456
+    def b2 .359
+    def b3 .339
+    def b4 .336
+    def b5 .339
+    def b6 .359
+    def b7 .456
+
+    def a .7112
+    def b a/2
+
+    def h .20
+    def stub .5
+
+    def dim 0.5
+    
+    sweep[cull=false] {1, translate([0, 0, b])} {
+    line (0, a/2)
+    	 (stub, a/2)
+    	 (stub, (a-b1)/2)
+    	 (stub+h, (a-b1)/2)
+    	 (stub+h, a/2)
+    	 (stub+h+l1, a/2)
+    	 (stub+h+l1, (a-b2)/2)
+    	 (stub+2*h+l1, (a-b2)/2)
+    	 (stub+2*h+l1, a/2)
+    	 (stub+2*h+l1+l2, a/2)
+    	 (stub+2*h+l1+l2, (a-b3)/2)
+    	 (stub+3*h+l1+l2, (a-b3)/2)
+    	 (stub+3*h+l1+l2, a/2)
+    	 (stub+3*h+l1+l2+l3, a/2)
+    	 (stub+3*h+l1+l2+l3, (a-b4)/2)
+    	 (stub+4*h+l1+l2+l3, (a-b4)/2)
+    	 (stub+4*h+l1+l2+l3, a/2)
+    	 (stub+4*h+l1+l2+l3+l4, a/2)
+    	 (stub+4*h+l1+l2+l3+l4, (a-b5)/2)
+    	 (stub+5*h+l1+l2+l3+l4, (a-b5)/2)
+    	 (stub+5*h+l1+l2+l3+l4, a/2)
+    	 (stub+5*h+l1+l2+l3+l4+l5, a/2)
+    	 (stub+5*h+l1+l2+l3+l4+l5, (a-b6)/2)
+    	 (stub+6*h+l1+l2+l3+l4+l5, (a-b6)/2)
+    	 (stub+6*h+l1+l2+l3+l4+l5, a/2)
+    	 (stub+6*h+l1+l2+l3+l4+l5+l6, a/2)
+    	 (stub+6*h+l1+l2+l3+l4+l5+l6, (a-b7)/2)
+    	 (stub+7*h+l1+l2+l3+l4+l5+l6, (a-b7)/2)
+    	 (stub+7*h+l1+l2+l3+l4+l5+l6, a/2)
+    	 (2*stub+7*h+l1+l2+l3+l4+l5+l6, a/2)
+    	 (2*stub+7*h+l1+l2+l3+l4+l5+l6, -a/2)
+    	 (stub+7*h+l1+l2+l3+l4+l5+l6, -a/2)
+    	 (stub+7*h+l1+l2+l3+l4+l5+l6, -(a-b7)/2)
+    	 (stub+6*h+l1+l2+l3+l4+l5+l6, -(a-b7)/2)
+    	 (stub+6*h+l1+l2+l3+l4+l5+l6, -a/2)
+    	 (stub+6*h+l1+l2+l3+l4+l5, -a/2)
+    	 (stub+6*h+l1+l2+l3+l4+l5, -(a-b6)/2)
+    	 (stub+5*h+l1+l2+l3+l4+l5, -(a-b6)/2)
+    	 (stub+5*h+l1+l2+l3+l4+l5, -a/2)
+    	 (stub+5*h+l1+l2+l3+l4, -a/2)
+    	 (stub+5*h+l1+l2+l3+l4, -(a-b5)/2)
+    	 (stub+4*h+l1+l2+l3+l4, -(a-b5)/2)
+    	 (stub+4*h+l1+l2+l3+l4, -a/2)
+    	 (stub+4*h+l1+l2+l3, -a/2)
+    	 (stub+4*h+l1+l2+l3, -(a-b4)/2)
+    	 (stub+3*h+l1+l2+l3, -(a-b4)/2)
+    	 (stub+3*h+l1+l2+l3, -a/2)
+    	 (stub+3*h+l1+l2, -a/2)
+    	 (stub+3*h+l1+l2, -(a-b3)/2)
+    	 (stub+2*h+l1+l2, -(a-b3)/2)
+    	 (stub+2*h+l1+l2, -a/2)
+    	 (stub+2*h+l1, -a/2)
+    	 (stub+2*h+l1, -(a-b2)/2)
+    	 (stub+h+l1, -(a-b2)/2)
+    	 (stub+h+l1, -a/2)
+    	 (stub+h, -a/2)
+    	 (stub+h, -(a-b1)/2)
+    	 (stub, -(a-b1)/2)
+    	 (stub, -a/2)
+    	 (0, -a/2)
+    	 (0, a/2)
+    	 }
+	 sweep[cull=false,fill=none,lay=over,style=dashed,style=ultra thin] {1, translate([0, 0, b])} {
+	 line (0, a/2)
+    	 (stub, a/2)
+    	 (stub, (a-b1)/2)
+    	 (stub+h, (a-b1)/2)
+    	 (stub+h, a/2)
+    	 (stub+h+l1, a/2)
+    	 (stub+h+l1, (a-b2)/2)
+    	 (stub+2*h+l1, (a-b2)/2)
+    	 (stub+2*h+l1, a/2)
+    	 (stub+2*h+l1+l2, a/2)
+    	 (stub+2*h+l1+l2, (a-b3)/2)
+    	 (stub+3*h+l1+l2, (a-b3)/2)
+    	 (stub+3*h+l1+l2, a/2)
+    	 (stub+3*h+l1+l2+l3, a/2)
+    	 (stub+3*h+l1+l2+l3, (a-b4)/2)
+    	 (stub+4*h+l1+l2+l3, (a-b4)/2)
+    	 (stub+4*h+l1+l2+l3, a/2)
+    	 (stub+4*h+l1+l2+l3+l4, a/2)
+    	 (stub+4*h+l1+l2+l3+l4, (a-b5)/2)
+    	 (stub+5*h+l1+l2+l3+l4, (a-b5)/2)
+    	 (stub+5*h+l1+l2+l3+l4, a/2)
+    	 (stub+5*h+l1+l2+l3+l4+l5, a/2)
+    	 (stub+5*h+l1+l2+l3+l4+l5, (a-b6)/2)
+    	 (stub+6*h+l1+l2+l3+l4+l5, (a-b6)/2)
+    	 (stub+6*h+l1+l2+l3+l4+l5, a/2)
+    	 (stub+6*h+l1+l2+l3+l4+l5+l6, a/2)
+    	 (stub+6*h+l1+l2+l3+l4+l5+l6, (a-b7)/2)
+    	 (stub+7*h+l1+l2+l3+l4+l5+l6, (a-b7)/2)
+    	 (stub+7*h+l1+l2+l3+l4+l5+l6, a/2)
+    	 (2*stub+7*h+l1+l2+l3+l4+l5+l6, a/2)
+    	 (2*stub+7*h+l1+l2+l3+l4+l5+l6, -a/2)
+    	 (stub+7*h+l1+l2+l3+l4+l5+l6, -a/2)
+    	 (stub+7*h+l1+l2+l3+l4+l5+l6, -(a-b7)/2)
+    	 (stub+6*h+l1+l2+l3+l4+l5+l6, -(a-b7)/2)
+    	 (stub+6*h+l1+l2+l3+l4+l5+l6, -a/2)
+    	 (stub+6*h+l1+l2+l3+l4+l5, -a/2)
+    	 (stub+6*h+l1+l2+l3+l4+l5, -(a-b6)/2)
+    	 (stub+5*h+l1+l2+l3+l4+l5, -(a-b6)/2)
+    	 (stub+5*h+l1+l2+l3+l4+l5, -a/2)
+    	 (stub+5*h+l1+l2+l3+l4, -a/2)
+    	 (stub+5*h+l1+l2+l3+l4, -(a-b5)/2)
+    	 (stub+4*h+l1+l2+l3+l4, -(a-b5)/2)
+    	 (stub+4*h+l1+l2+l3+l4, -a/2)
+    	 (stub+4*h+l1+l2+l3, -a/2)
+    	 (stub+4*h+l1+l2+l3, -(a-b4)/2)
+    	 (stub+3*h+l1+l2+l3, -(a-b4)/2)
+    	 (stub+3*h+l1+l2+l3, -a/2)
+    	 (stub+3*h+l1+l2, -a/2)
+    	 (stub+3*h+l1+l2, -(a-b3)/2)
+    	 (stub+2*h+l1+l2, -(a-b3)/2)
+    	 (stub+2*h+l1+l2, -a/2)
+    	 (stub+2*h+l1, -a/2)
+    	 (stub+2*h+l1, -(a-b2)/2)
+    	 (stub+h+l1, -(a-b2)/2)
+    	 (stub+h+l1, -a/2)
+    	 (stub+h, -a/2)
+    	 (stub+h, -(a-b1)/2)
+    	 (stub, -(a-b1)/2)
+    	 (stub, -a/2)
+    	 (0, -a/2)
+    	 (0, a/2)
+    	 }
+
+	 line[arrows=->] (0,0,0)
+	      (8,0,0)
+	 line[arrows=->] (0,0,0)
+	      (0,1,0)
+	 line (0,0) (0, -a)
+	 line (stub, -a/2) (stub, -a)
+	 def stub_p0 (0, -0.9*a)
+	 def stub_p1 (stub, -0.9*a)
+	 line[arrows=<->] (stub_p0) (stub_p1)
+	 special| \node[fill=white] at #1 {h};| (stub/2, -0.9*a)
+}
+
+put {
+    scale(2) then
+    rotate(90, [-1,0,0]) then 
+    view((10,10,10), (0, 0, -5))
+    } {model}
+
+global {
+    language tikz
+}

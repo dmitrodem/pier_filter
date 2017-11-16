@@ -3,6 +3,8 @@ oDesign = oProject.GetActiveDesign()
 
 lengths = ["4.68mm", "5.50mm", "5.63mm", "5.63mm", "5.50mm", "4.68mm"]
 widths  = ["4.56mm", "3.59mm", "3.39mm", "3.36mm", "3.39mm", "3.59mm", "4.56mm"]
+# lengths = ['4.740169mm', '5.558046mm', '5.682351mm', '5.699192mm', '5.682351mm', '5.558046mm', '4.740169mm']
+# widths  = ['4.521528mm', '3.537205mm', '3.336641mm', '3.302830mm', '3.302830mm', '3.336641mm', '3.537205mm', '4.521528mm']
 wg_width = "7.112mm"
 wg_height = "7.112mm/2"
 wg_thickness = "2mm"

@@ -3,7 +3,9 @@
 *.pyc
 .*
 mode_matching/octave/wg_run/*
-art/auto/*
-art/*.aux
-art/*.log
-art/*.pdf
+art/**/auto/*
+art/**/*.aux
+art/**/*.log
+art/*.bbl
+art/*.blg
+_region_.tex
