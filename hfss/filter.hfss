@@ -1204,7 +1204,7 @@ $begin 'AnsoftProject'
 					SetupType='HfssDriven'
 					Frequency='30.1GHz'
 					PortsOnly=false
-					MaxDeltaS=0.005
+					MaxDeltaS=0.007
 					UseMatrixConv=false
 					MaximumPasses=50
 					MinimumPasses=1
@@ -1398,91 +1398,6 @@ $begin 'AnsoftProject'
 								Increment=0.0872664625997165
 								CreateIndexedSubsweepFlag=false
 							$end 'PostprocessSweep'
-							$begin 'Sweep'
-								Variable='length_00'
-								Column='4.68mm'
-								Units='mm'
-							$end 'Sweep'
-							$begin 'Sweep'
-								Variable='length_01'
-								Column='5.5mm'
-								Units='mm'
-							$end 'Sweep'
-							$begin 'Sweep'
-								Variable='length_02'
-								Column='5.63mm'
-								Units='mm'
-							$end 'Sweep'
-							$begin 'Sweep'
-								Variable='length_03'
-								Column='5.63mm'
-								Units='mm'
-							$end 'Sweep'
-							$begin 'Sweep'
-								Variable='length_04'
-								Column='5.5mm'
-								Units='mm'
-							$end 'Sweep'
-							$begin 'Sweep'
-								Variable='length_05'
-								Column='4.68mm'
-								Units='mm'
-							$end 'Sweep'
-							$begin 'Sweep'
-								Variable='width_00'
-								Column='4.56mm'
-								Units='mm'
-							$end 'Sweep'
-							$begin 'Sweep'
-								Variable='width_01'
-								Column='3.59mm'
-								Units='mm'
-							$end 'Sweep'
-							$begin 'Sweep'
-								Variable='width_02'
-								Column='3.39mm'
-								Units='mm'
-							$end 'Sweep'
-							$begin 'Sweep'
-								Variable='width_03'
-								Column='3.36mm'
-								Units='mm'
-							$end 'Sweep'
-							$begin 'Sweep'
-								Variable='width_04'
-								Column='3.39mm'
-								Units='mm'
-							$end 'Sweep'
-							$begin 'Sweep'
-								Variable='width_05'
-								Column='3.59mm'
-								Units='mm'
-							$end 'Sweep'
-							$begin 'Sweep'
-								Variable='width_06'
-								Column='4.56mm'
-								Units='mm'
-							$end 'Sweep'
-							$begin 'Sweep'
-								Variable='wg_width'
-								Column='7.112mm'
-								Units='mm'
-							$end 'Sweep'
-							$begin 'Sweep'
-								Variable='wg_height'
-								Column='3.556mm'
-								Units='mm'
-							$end 'Sweep'
-							$begin 'Sweep'
-								Variable='wg_thickness'
-								Column='2mm'
-								Units='mm'
-							$end 'Sweep'
-							$begin 'Sweep'
-								Variable='stub_length'
-								Column='5mm'
-								Units='mm'
-							$end 'Sweep'
 						$end 'Sweeps'
 						IsPortOnly=false
 					$end 'SimDataExtractor'
@@ -1626,9 +1541,7 @@ $begin 'AnsoftProject'
 					ID=125
 					Name='Sweep'
 					$begin 'SimDataExtractor'
-						SimValue('S(1,1)', 2, 90, false, SimValueID=136, 3, 0, 2, 0, false, false, -1, 1, 0, 1, 1, '', 0, 0)
-						SimValue('S(1,2)', 2, 90, false, SimValueID=137, 3, 0, 2, 0, false, false, -1, 1, 0, 1, 1, '', 0, 0)
-						SimValue('S(2,1)', 2, 90, false, SimValueID=138, 3, 0, 2, 0, false, false, -1, 1, 0, 1, 1, '', 0, 0)
+						SimValue('S(2,1)', 2, 90, false, SimValueID=224, 3, 0, 2, 0, false, false, -1, 1, 0, 1, 1, '', 0, 0)
 						$begin 'Sweeps'
 							$begin 'PostprocessSweep'
 								Variable='Freq'
@@ -1796,7 +1709,7 @@ $begin 'AnsoftProject'
 		Notes=$begin_cdata$		$end_cdata$
 		$begin 'AnimationSetups'
 		$end 'AnimationSetups'
-		CacheHeaderFile='HDRr0DDvK2837515052071065.tmp'
+		CacheHeaderFile='HDR9pjea62313115123315984.tmp'
 	$end 'HFSSModel'
 	$begin 'DataInstances'
 		$begin 'Instance'
@@ -1805,7 +1718,7 @@ $begin 'AnsoftProject'
 				DesignInstanceID=1
 				$begin 'WindowPosition'
 					$begin 'EditorWindow'
-						'3D Modeler'(Editor3d(View(WindowPos(5, -1, -1, -4, -23, 0, 0, 1221, 441), OrientationMatrix(-0.0446379445493221, -0.025771738961339, 0.0364467240869999, 0, 0.0446379370987415, -0.0257717315107584, 0.0364467203617096, 0, 3.70030051044523e-09, 0.0515435039997101, 0.036446750164032, 0, 1.24465179443359, 0.627964317798615, -7.08592128753662, 1, 0, -2.88081789016724, 3.15921783447266, -1.12548589706421, 1.1217143535614, -2.88035488128662, 14.8539190292358), Drawings[15: 'diaphragm_00p', 'diaphragm_00n', 'diaphragm_01p', 'diaphragm_01n', 'diaphragm_02p', 'diaphragm_02n', 'diaphragm_03p', 'diaphragm_03n', 'diaphragm_04p', 'diaphragm_04n', 'diaphragm_05p', 'diaphragm_05n', 'diaphragm_06p', 'diaphragm_06n', 'filter_body'], 'View Data'('Render Mode'=1, 'Show Ruler'=1), ClipPlanes(ClipPlaneOptions(DisableWhenDrawingNewPlane=true, ForceOpqaueForUnclipped=false, ShowClipped=false, Transparency=0, HandleColor=16776960)))))
+						'3D Modeler'(Editor3d(View(WindowPos(3, -1, -1, -4, -23, 0, 0, 463, 441), OrientationMatrix(-0.0446379445493221, -0.025771738961339, 0.0364467240869999, 0, 0.0446379370987415, -0.0257717315107584, 0.0364467203617096, 0, 3.70030051044523e-09, 0.0515435039997101, 0.036446750164032, 0, 1.24465179443359, 0.627964317798615, -7.08592128753662, 1, 0, -0.984399914741516, 1.26280009746552, -1.59260046482086, 1.58882892131805, -2.88035488128662, 14.8539190292358), Drawings[15: 'diaphragm_00p', 'diaphragm_00n', 'diaphragm_01p', 'diaphragm_01n', 'diaphragm_02p', 'diaphragm_02n', 'diaphragm_03p', 'diaphragm_03n', 'diaphragm_04p', 'diaphragm_04n', 'diaphragm_05p', 'diaphragm_05n', 'diaphragm_06p', 'diaphragm_06n', 'filter_body'], 'View Data'('Render Mode'=1, 'Show Ruler'=1), ClipPlanes(ClipPlaneOptions(DisableWhenDrawingNewPlane=true, ForceOpqaueForUnclipped=false, ShowClipped=false, Transparency=0, HandleColor=16776960)))))
 					$end 'EditorWindow'
 				$end 'WindowPosition'
 				$begin 'ReportSetup'
@@ -2495,6 +2408,30 @@ $begin 'AnsoftProject'
 																	ModifyPosition=false
 																$end 'OverlayLayoutAttribute'
 															$end 'Dock_0'
+															$begin 'Dock_1'
+																$begin 'OverlayLayoutAttribute'
+																	$begin 'BoundingRect'
+																		Top=5000
+																		Left=0
+																		Bottom=10000
+																		Right=10000
+																	$end 'BoundingRect'
+																	ModifySize=false
+																	ModifyPosition=false
+																$end 'OverlayLayoutAttribute'
+															$end 'Dock_1'
+															$begin 'Dock_2'
+																$begin 'OverlayLayoutAttribute'
+																	$begin 'BoundingRect'
+																		Top=0
+																		Left=0
+																		Bottom=5000
+																		Right=10000
+																	$end 'BoundingRect'
+																	ModifySize=false
+																	ModifyPosition=false
+																$end 'OverlayLayoutAttribute'
+															$end 'Dock_2'
 														$end 'DockableOverlayLayoutAttribute'
 													$end 'SubMapItem'
 												$end 'MainMapItem'
@@ -2536,26 +2473,6 @@ $begin 'AnsoftProject'
 							ReportID=1
 							$begin 'WindowInfoList'
 								$begin 'Report2D'
-									$begin 'ViewInfo'
-										$begin 'WrapperView'
-											ID(20)
-										$end 'WrapperView'
-										$begin 'WrapperDoc'
-											HiddenDrawings()
-											$begin 'DispType'
-												PlotType=1
-												$begin 'CurveMed'
-													$begin 'MedCamera'
-														$begin 'svrc'
-															svid=4
-															view(20, cam(XYCam(false, true, true, true, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0)))
-														$end 'svrc'
-													$end 'MedCamera'
-												$end 'CurveMed'
-											$end 'DispType'
-										$end 'WrapperDoc'
-										WindowPos(WindowPos(3, -1, -1, -4, -23, 180, 198, 1405, 703))
-									$end 'ViewInfo'
 								$end 'Report2D'
 							$end 'WindowInfoList'
 						$end 'XY Plot 1'

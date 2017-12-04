@@ -5,8 +5,8 @@
 
 \begin{document}
 \begin{tikzpicture}[]
-    \begin{axis}[colorbar,colormap/viridis,xlabel={$m \quad (a = \sqrt{2})$},
-      ylabel={$n \quad (b = 1)$}]
+    \begin{axis}[colorbar,colormap/viridis,xlabel={$n \quad (b = \sqrt{2})$},
+      ylabel={$m \quad (a = 1)$}]
     \addplot[scatter,scatter src=explicit, 
     only marks, mark=square*,point meta={\thisrow{S12}}]
     table {../data/s21_matrix.txt};

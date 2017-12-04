@@ -8,4 +8,6 @@ art/**/*.aux
 art/**/*.log
 art/*.bbl
 art/*.blg
+art/*.toc
+art/*.out
 _region_.tex

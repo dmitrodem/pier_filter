@@ -2,9 +2,7 @@
 \usepackage{graphics}
 \usepackage{amsmath}
 \usepackage[mode=buildnew]{standalone}
-\usepackage{cleveref}
 \usepackage{tikz}
-\usepackage{multirow}
 \renewcommand{\arraystretch}{1.5}
 
 \begin{document}
@@ -12,22 +10,51 @@
 \setcounter{page}{1}
 \pjheader{Vol.\ x, y--z, 2014}
 
-\title
+\title%
+[Waveguide filter synthesis using mode-matching method]%
 {Waveguide filter synthesis using mode-matching method}
-\footnote{\it Received date}
-\footnote{\hskip-0.12in*\, Corresponding author:~Dmitriy~Dyomin (demin.da@mipt.ru).}
-\footnote{\hskip-0.12in\textsuperscript{1} Moscow Institute of Physics
-  and Technology.}
-\footnote{\hskip-0.12in\textsuperscript{2} The second affiliation.}
 
 \author{
   Dmitriy~A.~Dyomin\textsuperscript{*, 1},
-  Nikolay~P.~Chubinskiy\textsuperscript{1},
-  Ivan~V.~Filatov\textsuperscript{1} and
-  Vasiliy~V.~Filatov\textsuperscript{2}}
+  Nikolay~P.~Chubinsky\textsuperscript{1,2},
+  Ivan~V.~Filatov\textsuperscript{1,3},
+  Vasiliy~V.~Filatov\textsuperscript{4} and
+  Nikolay~N.~Denisov\textsuperscript{5}
+}
+
+\footnote{\it Received date}
+\setcounter{footnote}{0}
+\footnote{\hskip-0.12in*\,
+  Corresponding author: Dmitriy~Dyomin (demin.da@mipt.ru).}
+\setcounter{footnote}{0}
+\footnote{\hskip-0.12in\textsuperscript{1}
+  Moscow Institute of Physics and Technology}
+\setcounter{footnote}{0}
+\footnote{\hskip-0.12in\textsuperscript{2}
+  nchub940@yandex.ru}
+\setcounter{footnote}{0}
+\footnote{\hskip-0.12in\textsuperscript{3}
+  ivfilatov@mail.ru}
+\setcounter{footnote}{0}
+\footnote{\hskip-0.12in\textsuperscript{4}
+  Institute of Energy Problems for Chemical Physics (branch),
+  vvfilatov1@gmail.com}
+\setcounter{footnote}{0}
+\footnote{\hskip-0.12in\textsuperscript{3} Institute of Problems of
+  Chemical Physics of RAS, ndenisov@gmail.com}
+\setcounter{footnote}{0}
+
+\runningauthor{Dyomin et. al.}
+\tocauthor{
+  Dmitriy~A.~Dyomin,
+  Nikolay~P.~Chubinsky,
+  Ivan~V.~Filatov,
+  Vasiliy~V.~Filatov and
+  Nikolay~N.~Denisov
+}
 
 \begin{abstract}
-  In this paper, a mode matching method is discussed in application of
+  In this paper, a mode matching method is discussed in application to
   waveguide filter synthesis task. It is customized for analysis of
   particular waveguide filter with thick symmetric irises. Equivalent
   circuit model of thick iris discontinuities is also
@@ -51,7 +78,7 @@ including direct and indirect neighbours coupling. Indirect-coupled
 filters may be realized as folded structures with couplings between
 non-adjacent resonators or by using multi-mode resonators. They allow
 more control over transfer function for the cost of increased
-complexity and cost of fabrication. In this article, an narrowband
+complexity and cost of fabrication. In this article, a narrowband
 direct-coupled waveguide filter for $Ka$-band is considered. Coupling
 is performed by irises symmetric around $yz$-plane
 (Figure~\ref{fig:filter-drawing}).
@@ -71,8 +98,8 @@ parameters of the iris using relations from \cite{matthaei1980}.
 
 However, this approximation works well only for the case of thin
 irises. A practical $Ka$-band (wavelength
-$\lambda \sim 8~\mathrm{mm}$) filter fabricated by milling contains
-``thick'' irises ($h \sim 2~\mathrm{mm}$, so that $h/\lambda$ is not
+$\lambda \approx 8~\mathrm{mm}$) filter fabricated by milling contains
+``thick'' irises ($h \approx 2~\mathrm{mm}$, so that $h/\lambda$ is not
 negligible anymore). So, we aim at building equivalent circuit model
 for this type of discontinuity. But at first let us consider direct
 task of filter analysis.
@@ -91,46 +118,46 @@ interest as its modes are known in analytical form.
 
 A discussed waveguide filter is depicted on
 Figure~\ref{fig:filter-drawing}. It consists of rectangular waveguide
-sections connected with each other in a symmetrically. Note that
-irises are also described as waveguide sections. The only difference
-is the absence of propagating modes in them. Filter is excited by a
-fundamental mode $TE_{01}$, so several mode types are not excited
-throughout the structure:
+sections connected with each other symmetrically around
+$zy$-plane. Note that irises are also described as waveguide
+sections. The only difference is the absence of propagating modes in
+them. Filter is excited by a fundamental mode $TE_{01}$, so several
+mode types are not excited throughout the structure:
 
 \begin{itemize}
 \item all $TM$ waves  
-\item $TE_{nm}, n \ne 0$ waves 
+\item $TE_{n, m}, n \ne 0$ waves 
 \item $TE_{0, 2m}$ waves (anti-symmetric around $yz$-plane while
   excitation $TE_{01}$ is symmetric).
 \end{itemize}
 
-Remaining are $TE_{0m}$ ($m$ -- odd number) waves only. Their
+Remaining are $TE_{0, 2m}$ waves only. Their
 normalized $E_{y}$ components are represented by the following
 relation:
 
 \begin{equation}
   \label{eq:eigen_functions}
-  F_n^a(x) = \sqrt{\frac{2}{a}} \cos{\frac{\pi x n}{a}},
+  E_y[TE_{0, 2m}] = F_{2m}^a(x) = \sqrt{\frac{2}{a}} \cos{\frac{2 \pi x m}{a}},
 \end{equation}
 
 where $a$ is the waveguide width. 
 
 Overlapping matrix used to calculate reflection between adjacent
-sections is (for the case $a \le b$):
+sections of widths $a$ and $b$ is for the case $a \le b$:
 \begin{equation}
   \label{eq:overlapping}
   V_{mn} = \int\limits_{-a/2}^{a/2}F_m^a(x) F_n^b(x) dx =
   \begin{cases}
-    \frac{4}{\pi} \frac{a^{-3/2} b^{-1/2} m
-      (-1)^{\frac{m+1}{2}}}{\left(m/a\right)^2 -
-      \left(n/b\right)^2} \cos{\left(\frac{\pi}{2}\frac{a}{b}n\right)}& \text{ if }\frac{m}{a} \ne \pm \frac{n}{b} \\
-    \sqrt{\frac{a}{b}}~\text{ otherwise}
+    \cfrac{4}{\pi} \cfrac{a^{-3/2} b^{-1/2} m
+      (-1)^{\cfrac{m+1}{2}}}{\left(m/a\right)^2 -
+      \left(n/b\right)^2} \cos{\left(\cfrac{\pi}{2}\cfrac{a}{b}n\right)}& \text{ if }\cfrac{m}{a} \ne \pm \cfrac{n}{b} \\
+    \sqrt{\cfrac{a}{b}}~\text{ otherwise}
   \end{cases}
 \end{equation}
 
 Let $\mathbf{Q} = V_{mn}$,
 $\mathbf{P} = \gamma_n^a/\gamma_m^b V_{nm}$, where $\gamma_n^a$ are
-the propagation coefficients for mode $TE_{0, 2n+1}$ in a waveguide
+the propagation coefficients for mode $TE_{0, 2n+1}$ in a waveguide of
 width $a$, then generalized $S$-parameters matrix of the waveguide
 junction is (according to \cite{conciauro2000advanced}):
 
@@ -144,18 +171,21 @@ junction is (according to \cite{conciauro2000advanced}):
   \end{array}
 \end{equation}
 
+Here $\mathbf{I}$ are identity matrices of matching dimensions.
+
 \begin{figure}
   \includestandalone{images/s12}
   \caption{Transmission coefficient matrix $S_{12}$ for a waveguide
-    junction. Waveguide widths are $a=\sqrt{2}$, $b=1$}
+    junction. Waveguide widths are $a=1$, $b=\sqrt{2}$ (in arbitrary
+    units). Color represents the magnitude of $S_{12}$ matrix elements.}
   \label{fig:s12_matrix}
 \end{figure}
 
 An example solution for the case of connected waveguides of widths
-$a = \sqrt{2}$ and $b = 1$ is shown on
+$a = 1$ and $b = \sqrt{2}$ is shown on
 Figure~\ref{fig:s12_matrix}. One can notice the quasi-diagonal
 structure of the matrix, i.~e. energy is efficiently transferred
-between modes which numbers follows the simple equation $m/n =
+between modes numbers of which follow the simple equation $m/n =
 a/b$. This results from a specific form of overlapping matrix in
 Equation.~\ref{eq:overlapping}. Its values are close to $\sqrt{a/b}$
 on quasi-diagonal indices and decrease rapidly on off-diagonal
@@ -203,7 +233,7 @@ Using equation~\eqref{eq:cascaded_s} is not the only way to find
 cascaded network parameters. One could convert scattering parameters
 $S$ to transmission parameters $T$ as described in
 \cite{frei2008}. Cascading is much simpler in terms of
-$T$-matrices. Resultant $T$-matrix is a matrix multiple of
+$T$-matrices. Resultant $T$-matrix is a matrix product of
 $T$-matrices of the cascaded network elements. However, conversion
 between $S$-matrix and $T$-matrix forms is not that straightforward:
 \begin{equation}
@@ -217,26 +247,26 @@ between $S$-matrix and $T$-matrix forms is not that straightforward:
 \end{equation}
 
 As pointed out in \cite{frei2008}, $\mathbf{S}_{21}$ block of
-generalized $\mathbf{S}$-matrix is rectangular, so it is inverse
+generalized $\mathbf{S}$-matrix is rectangular, so its inverse
 $\mathbf{S}_{21}^{-1}$ is ambiguous and conversion between S- and
 T-matrices results in loss of information. By contrast,
 equation~\eqref{eq:cascaded_s} contains inverse values of square
 matrices only.
 
-Equations~\cref{eq:overlapping,eq:s_matrix,eq:waveguide_element,eq:cascaded_s}
-fully define generalized $S$-matrix for the whole waveguide filter
-thus accomplishing filter analysis task.
+Equations~\eqref{eq:overlapping} to \eqref{eq:cascaded_s} fully define
+generalized $S$-matrix for the whole waveguide filter thus
+accomplishing filter analysis task.
 
 \section{Filter synthesis using equivalent circuit}
 \label{sec:filter-synth}
 
 Iris discontinuities in the discussed filter are modeled by shunt
-inductances shown on Figure~\ref{fig:circuit:1}a. Shunt inductance may
-be can be converted to impedance inverter using equations from
+inductances shown on Figure~\ref{fig:circuit:1}a. Shunt inductance can
+be converted to impedance inverter using equations from
 \cite{pozar2012microwave} thus yielding more general equivalent
-circuit shown on Figure~\ref{fig:circuit:1}b. However, thin iris
-model does not work well for $Ka$ band (wavelength
-$\lambda \approx 7~mm$) with typical iris thickness $h \approx 2~mm$.
+circuit shown on Figure~\ref{fig:circuit:1}b. However, thin iris model
+does not work well for $Ka$ band (wavelength $\lambda \approx 8~mm$)
+with typical iris thickness $h \approx 2~mm$.
 
 \begin{figure}[h]
   \begin{tabular}{cc}
@@ -248,9 +278,9 @@ $\lambda \approx 7~mm$) with typical iris thickness $h \approx 2~mm$.
     b) & \\
   \end{tabular}
   
-  \caption{Waveguide filter equivalent circuit.  a) -- $N$-section
-    direct-coupled filter equivalent circuit, b) -- $N$-section filter
-    equivalent circuit using impedance inverters, c) -- single thick
+  \caption{Waveguide filter equivalent circuit.  a) $N$-section
+    direct-coupled filter equivalent circuit, b) $N$-section filter
+    equivalent circuit using impedance inverters, c) single thick
     iris equivalent circuit (also used as single inverter equivalent circuit).}
   \label{fig:circuit:1}
 \end{figure}
@@ -265,8 +295,8 @@ matrix is then
   \label{eq:abcd_matrix}
   \begin{array}{r@{}l}
   \begin{bmatrix}
-    a & b \\
-    c & d
+    A & B \\
+    C & D
   \end{bmatrix}
         = & 
   \begin{bmatrix}
@@ -303,7 +333,8 @@ Converting ABCD-parameters to S-matrix, one determines:
 So, equivalent circuit parameters may be calculated using S-parameters:
 \begin{equation}
   \label{eq:equivalent_circuit}
-  \cfrac{X}{Z_0} = \cfrac{1}{2}\sqrt{\cfrac{1}{\left|S_{11}\right|^2}-1} \quad
+  \cfrac{X}{Z_0} =
+  \cfrac{1}{2}\sqrt{\cfrac{1}{\left|S_{11}\right|^2}-1} , \quad\quad
   \theta = -\arccos{\left|S_{11}\right|} - \arg{\left(-S_{11}\right)}
 \end{equation}
 
@@ -314,20 +345,24 @@ Figure~\ref{fig:equiv-circuit} for iris thickness $h = 2~mm$.
 
 \begin{figure}[h]
   \begin{tabular}{cc}
-    \includestandalone{images/impedance} &
-                                           \includestandalone{images/theta}
+    \includegraphics{images/impedance} &
+                                           \includegraphics{images/theta}
     \\
     a) & b) \\
   \end{tabular}
-  \caption{Equivalent circuit parameters for iris thickness $h/a = 0.1$. a) -- equivalent impedance
-    $X/Z_0$, b) -- equivalent t-line length $\theta$ (cf. Figure~\ref{fig:circuit:1}).}
+  \caption{Equivalent circuit parameters for iris thickness $h = 2~mm$
+    (waveguide width $a = 7.112~mm$). Parameter
+    $fc = F_{cutoff}/F_{center}$ is the normalized cutoff
+    frequency. a) equivalent impedance $X/Z_0$, b) equivalent
+    transmission line length $\theta$
+    (cf. Figure~\ref{fig:circuit:1}).}
   \label{fig:equiv-circuit}
 \end{figure}
 
 
 Impedance inverter's equivalent circuit is similar to that of thick
 iris and depicted on Figure~\ref{fig:circuit:1}c. Conversion between
-these representations if performed by equations from \cite{pozar2012microwave}:
+these representations is performed by equations from \cite{pozar2012microwave}:
 \begin{equation}
   \label{eq:impedance_transformer}
   \cfrac{X_i}{Z_0} = \cfrac{K_i/Z_0}{(K_i/Z_0)^2-1},
@@ -338,9 +373,9 @@ these representations if performed by equations from \cite{pozar2012microwave}:
 Note that $\theta_i < 0$, i.~e. it is subtracted from adjacent half-wave
 resonators.
 
-Filter network Figure~\ref{fig:circuit:1}b is similar to a well-known
-problem of a capacitively-coupled microstrip filter. The design
-procedure described in \cite{pozar2012microwave} is as follows:
+Filter network shown on Figure~\ref{fig:circuit:1}b is similar to a
+well-known problem of a capacitively-coupled microstrip filter. The
+design procedure described in \cite{pozar2012microwave} is as follows:
 \begin{itemize}
 \item choose low-pass filter prototype (maximally flat, equal ripple, etc.)
 \item determine selected filter's prototype values
@@ -377,7 +412,7 @@ following set of parameters:
 \begin{itemize}
 \item frequency band $F_{center} = 30.1~GHz \pm 5.1\%$
 \item Tchebyshev filter, order $n = 6$, ripple 0.1~dB
-\item cutoff frequency $F_{cutoff} = 0.7 F_{center}$
+\item cutoff frequency for fundamental mode of WR28 waveguide is $F_{cutoff} = 0.7 F_{center}$
 \end{itemize}
 
 \begin{table}
@@ -412,32 +447,36 @@ following set of parameters:
   \label{tab:filter_dimensions}
 \end{table}
 
-Equivalent circuit parameters for this filter is show in
+Equivalent circuit parameters for this filter are shown in
 Table~\ref{tab:filter_dimensions}a. Using these data, filter
-dimensions are evaluated and show in
+dimensions have been evaluated and are shown in
 Table~\ref{tab:filter_dimensions}b. $S$-parameters of the designed
 filter has been calculated using 3 different methods: equivalent
-circuit model, mode matching mode and FEM with the help of commercial
+circuit model, mode matching method and FEM with the help of commercial
 software (HFSS). Results are presented on
 Figure~\ref{fig:transfer-function}.
 
 \begin{figure}[h]
   \centering
   \includegraphics{images/reflections}
-  \caption{Filter transfer function calculated using various methods.}
+  \caption{Filter transfer function and reflection coefficient
+    calculated using various methods: mode matching method (solid
+    line), equivalent circuit method (dashed line) and finite elements
+    method (dotted line).}
   \label{fig:transfer-function} 
 \end{figure} 
 
-FEM and mode matching yield almost the same result with slight
-differences in the pass-band that can be accounted for by finite
-precision of the numerical methods. However, computation time for mode
-matching is reduced drastically compared to the FEM (TODO: how
-much?). Pass-band return loss is less than $-15~dB$. As for equivalent
-circuit model, it is the fastest yet the least accurate. Besides, this
-model shows systematic discrepancies in selectivity: it is higher for
-$F < F_{center}$ and lower for $F > F_{center}$ than calculated using
-MMM of FEM.
-
+FEM and MMM yield almost the same result with slight differences in
+the pass-band that can be accounted for by finite precision of the
+numerical methods. However, computation time for mode matching is
+reduced drastically compared to the FEM: HFSS v15 calculations took 1
+hour 36 minutes on desktop with Intel Core i7-2600, while the same
+results have been obtained using Python (Numpy) code implementing MMM
+in 49 seconds on the same hardware. Pass-band return loss is less than
+$-15~dB$. As for equivalent circuit model, it is the fastest yet the
+least accurate. Besides, this model shows systematic discrepancies in
+selectivity: it is higher for $F < F_{center}$ and lower for
+$F > F_{center}$ than calculated using MMM of FEM.
 
 \section{Conclusion}
 \label{sec:conclusion}
@@ -447,13 +486,17 @@ demands on CPU time and memory compared to conventional mesh-based
 techniques such as FEM.
 
 The proposed thick iris model allowed applying conventional synthesis
-procedure for direct-coupled waveguide filter with tick irises. A
+procedure for direct-coupled waveguide filter with thick irises. A
 band-pass filter has been designed using this procedure. Its center
 frequency is $30.1~GHz$, bandwidth is $5\%$. The designed filter is
-quite compact (overall length = ???) and can be used in high-speed
+quite compact (overall length $L = 45.62~mm$, from
+Table~\ref{tab:filter_dimensions}b) and can be used in high-speed
 satellite transmission lines for separating up- and down-link signals
 for duplex operation. Simulations using various computational methods
 are consistent with each other.
+
+HFSS models and developed Python scripts are available on
+\texttt{https://github.com/dmitrodem/pier\_filter}.
 
 \bibliography{db}{}
 \bibliographystyle{pier}

@@ -250,7 +250,7 @@ def eval_filter(order, ripple, fbw, plot_hfss = False, plot_openems = False):
     plt.grid()
     plt.ylim([-150, 10])
     plt.legend()
-    plt.show()
+    #plt.show()
 
     return bw
 
